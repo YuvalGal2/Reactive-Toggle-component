@@ -6,10 +6,13 @@
   let stateSelected = null;
   let customPropertyName = null;
   let customPropertyValue = null;
+  let customOffColor = null;
+  let customOnColor = null;
+
   let index = null;
 
   //global variables for elementsRef
-  // the _selector_ before the component name mention its an html elementRef
+ 
   let _selector_toggleElement = null;
   let _selector_toggleSelectorElement = null;
   let _selector_toggleOnElement = null;
@@ -23,15 +26,20 @@
    getStateByToggle = (toggle) => toggle.getAttribute("state");
   
 
-  module.exports.init = function (_toggleOffText = 'Off', _toggleOnText = 'On', _stateSelected = 0, _customPropertyName = null, _customPropertyValue = null, _index = 0) {
+  module.exports.init = function (_toggleOffText = 'Off', _toggleOnText = 'On', _stateSelected = 0, _customPropertyName = null, _customPropertyValue = null, _index = 0, _customOffColor = '#888', _customOnColor =  '#1BB157') {
     if(_toggleOffText.length > 4 || _toggleOnText.length > 4){
       console.warn("Toggle: Please consider using Texts with no more then 4 letters for the state description \n or change the behavior of the component.");
-
+    }
+    if(_customOffColor.length < 3 || _customOnColor < 3){
+      console.log("Toggle: its seems like you passing an invalid color to the init function of the component ")
     }
     // use the variable gotten from the init function in the global scope as well.
     toggleOnText = _toggleOnText
     toggleOffText = _toggleOffText;
     stateSelected = Number(_stateSelected);
+    
+    customOffColor = _customOffColor;
+    customOnColor = _customOnColor;
 
     customPropertyName = _customPropertyName;
     customPropertyValue = _customPropertyValue;
@@ -126,7 +134,7 @@
     toggle.children[2].style.opacity = "0";
     toggle.children[1].style.opacity = "1";
     toggle.children[0].classList.add('toggle-selector-on');
-    toggle.style.backgroundColor = "#1BB157";
+    toggle.style.backgroundColor = customOnColor;
   }
   function turnOff(toggle) {
     toggle.children[2].classList.add('is-selected');
@@ -134,7 +142,7 @@
     toggle.children[0].classList.remove('toggle-selector-on');
     toggle.children[1].style.opacity = "0";
     toggle.children[2].style.opacity = "1";
-    toggle.style.backgroundColor = "#888";
+    toggle.style.backgroundColor = customOffColor;
   }
 
 
@@ -143,7 +151,7 @@
   function onToggleClicked(toggle) {
     let toggleOff = getToggleOff(toggle);
     let toggleOn = getToggleOn(toggle);
-    let toggleSelect = getToggleSelector(toggle);
+ 
     let _onText = getToggleOnText(toggleOn);
     let _offText = getToggleOffText(toggleOff);
     let state = getStateByToggle(toggle);
@@ -153,22 +161,12 @@
     if (newState[0] != undefined) {
       if (newState[0] == 0) {
         // toggle the button off
-        toggleOff.classList.add('is-selected');
-        toggleOn.classList.remove('is-selected');
-        toggleSelect.classList.remove('toggle-selector-on');
-        toggleOff.style.opacity = "1";
-        toggleOn.style.opacity = "0"
-        toggle.style.backgroundColor = "#888";
+        turnOff(toggle);
         toggle.setAttribute("state", 0);
       }
       else {
         // toggle the button on
-        toggleOff.classList.remove('is-selected');
-        toggleOn.classList.add('is-selected');
-        toggleOff.style.opacity = "0";
-        toggleOn.style.opacity = "1";
-        toggleSelect.classList.add('toggle-selector-on');
-        toggle.style.backgroundColor = "#1BB157";
+        turnOn(toggle);
         toggle.setAttribute("state", 1);
       }
     }
