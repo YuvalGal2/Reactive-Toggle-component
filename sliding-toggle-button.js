@@ -1,15 +1,12 @@
 (function (window) {
-  
-  // global variables of the component itself.
-  let toggleOffText;
-  let toggleOnText;
-  let stateSelected;
-  let customPropertyName;
-  let customPropertyValue;
-  let index;
 
-  // global variable to control if init has been called or not.
-  
+  // global variables of the component itself.
+  let toggleOffText = null;
+  let toggleOnText = null;
+  let stateSelected = null;
+  let customPropertyName = null;
+  let customPropertyValue = null;
+  let index = null;
 
   //global variables for elementsRef
   // the _selector_ before the component name mention its an html elementRef
@@ -17,28 +14,35 @@
   let _selector_toggleSelectorElement = null;
   let _selector_toggleOnElement = null;
   let _selector_toggleOffElement = null;
-
-
+  
+   getToggleOff = (toggle) =>  toggle.children[2];
+   getToggleOn = (toggle) => toggle.children[1];
+   getToggleSelector = (toggle) => toggle.children[0];
+   getToggleOnText = (toggleOnRef) => toggleOnRef.innerText;
+   getToggleOffText = (toggleOffRef) => toggleOffRef.innerText;
+   getStateByToggle = (toggle) => toggle.getAttribute("state");
+  
 
   module.exports.init = function (_toggleOffText = 'Off', _toggleOnText = 'On', _stateSelected = 0, _customPropertyName = null, _customPropertyValue = null, _index = 0) {
+    if(_toggleOffText.length > 4 || _toggleOnText.length > 4){
+      console.warn("Toggle: Please consider using Texts with no more then 4 letters for the state description \n or change the behavior of the component.");
 
+    }
     // use the variable gotten from the init function in the global scope as well.
     toggleOnText = _toggleOnText
     toggleOffText = _toggleOffText;
     stateSelected = Number(_stateSelected);
-    
+
     customPropertyName = _customPropertyName;
     customPropertyValue = _customPropertyValue;
     index = _index;
-
     // draw a div which acts as container and assign it the toggle warpper class
     let toggleWarpper = document.createElement("div");
     toggleWarpper.classList.add("toggle-warpper");
     // set the initial state of the container to the initial state that was passed
     // if got passed string by accident .. convert it to Number (anyway)
-    toggleWarpper.setAttribute("state",Number(_stateSelected));
-    
-    
+    toggleWarpper.setAttribute("state", Number(_stateSelected));
+
     // draw 3 more spans, 
     // the first on the the white square which use the animation.
     // the second one is the span who holds the on text of the button.
@@ -52,8 +56,6 @@
     let toggleOffElement = document.createElement("span");
     toggleOffElement.classList.add("toggle-off");
     toggleOffElement.classList.add("toggle-status");
-
-
 
     // appending the newly created elements to the main element which is the 
     // toggle-warpper element.
@@ -76,66 +78,33 @@
     // and not just 'Yes'/'No' or 'True'/'False' .. it can be used for everything.
     toggleOnElement.innerHTML = toggleOnText;
     toggleOffElement.innerHTML = toggleOffText;
-
     // more assignment to global variables...
-   _selector_toggleElement = toggleWarpper;
-   _selector_toggleSelectorElement = selectorElement;
-   _selector_toggleOnElement = toggleOnElement;
-   _selector_toggleOffElement = toggleOffElement;
-
-
+    _selector_toggleElement = toggleWarpper;
+    _selector_toggleSelectorElement = selectorElement;
+    _selector_toggleOnElement = toggleOnElement;
+    _selector_toggleOffElement = toggleOffElement;
     // the initaliztion process has been completed, now its the time to listen to clicks
     initHasFinished();
-
     // return the container to the view 
     return toggleWarpper;
   }
 
-  function turnOn(fromEle,toEle){
-
-  }
-  function turnOff(fromEle,toEle){
-   
-  }
-  function initHasFinished(){
+  function initHasFinished() {
     // on end of initilaztion of the component ...
     // for the first time this component is loaded there is a need to know 
     // which state to display.. maybe its coming from db and needs to be set up to true state...
     if (stateSelected === 1) {
-      // toggle the button on
-      if (_selector_toggleOffElement.classList.contains("is-selected")) {
-        _selector_toggleOffElement.classList.remove('is-selected');
-      }
-      _selector_toggleOnElement.classList.add('is-selected');
-
-      _selector_toggleOffElement.style.opacity = "0";
-      _selector_toggleOnElement.style.opacity = "1";
-      _selector_toggleSelectorElement.classList.add('toggle-selector-on');
-      _selector_toggleElement.style.backgroundColor = "#1BB157";
+      turnOn(_selector_toggleElement);
     }
     else {
-      _selector_toggleOffElement.classList.add('is-selected');
-      _selector_toggleOnElement.classList.remove('is-selected');
-
-      _selector_toggleSelectorElement.classList.remove('toggle-selector-on');
-      _selector_toggleOnElement.style.opacity = "0";
-      _selector_toggleOffElement.style.opacity = "1";
-      _selector_toggleElement.style.backgroundColor = "#888";
+      turnOff(_selector_toggleElement);
     }
-    _selector_toggleElement.addEventListener("click",function(){
- 
-
-
+    _selector_toggleElement.addEventListener("click", function () {
       onToggleClicked(this);
     })
   }
 
-  
-
-
-
   const changeState = (currentState, offState, onState) => {
- 
     switch (currentState) {
       // if got 0 (off return on, with the text of on state
       // if got 1 (on return off with the text of off state
@@ -147,47 +116,68 @@
         break;
     }
   };
-  
-    // for each time the single component was clicked
-      function onToggleClicked(toggle,offText,onText){
 
-        let toggleOff = toggle.children[2];
-        let toggleOn = toggle.children[1];
-        let toggleSelect = toggle.children[0];
-        let _onText = toggleOn.innerText;
-        let _offText = toggleOff.innerText;
-        let state = toggle.getAttribute("state");
-   
-      let newState = changeState(Number(state), _offText, _onText);
-  
-     
-      if (newState[0] != undefined) {
-        if (newState[0] == 0) {
-          // toggle the button off
-          toggleOff.classList.add('is-selected');
-          toggleOn.classList.remove('is-selected');
 
-          toggleSelect.classList.remove('toggle-selector-on');
-          toggleOff.style.opacity = "1";
-          toggleOn.style.opacity = "0"
-         toggle.style.backgroundColor = "#888";
-         toggle.setAttribute("state",0);
-        }
-        else {
-          // toggle the button on
-        
-         toggleOff.classList.remove('is-selected');
-          toggleOn.classList.add('is-selected');
-          toggleOff.style.opacity = "0";
-          toggleOn.style.opacity = "1";
-          toggleSelect.classList.add('toggle-selector-on');
-          toggle.style.backgroundColor = "#1BB157";
-          toggle.setAttribute("state",1);
-        }
+  function turnOn(toggle) {
+    if (toggle.children[0].classList.contains("is-selected")) {
+      toggle.children[2].classList.remove('is-selected');
+    }
+    toggle.children[0].classList.add('is-selected');
+    toggle.children[2].style.opacity = "0";
+    toggle.children[1].style.opacity = "1";
+    toggle.children[0].classList.add('toggle-selector-on');
+    toggle.style.backgroundColor = "#1BB157";
+  }
+  function turnOff(toggle) {
+    toggle.children[2].classList.add('is-selected');
+    toggle.children[1].classList.remove('is-selected');
+    toggle.children[0].classList.remove('toggle-selector-on');
+    toggle.children[1].style.opacity = "0";
+    toggle.children[2].style.opacity = "1";
+    toggle.style.backgroundColor = "#888";
+  }
+
+
+
+  // for each time the single component was clicked
+  function onToggleClicked(toggle) {
+    let toggleOff = getToggleOff(toggle);
+    let toggleOn = getToggleOn(toggle);
+    let toggleSelect = getToggleSelector(toggle);
+    let _onText = getToggleOnText(toggleOn);
+    let _offText = getToggleOffText(toggleOff);
+    let state = getStateByToggle(toggle);
+    let newState = changeState(Number(state), _offText, _onText);
+
+
+    if (newState[0] != undefined) {
+      if (newState[0] == 0) {
+        // toggle the button off
+        toggleOff.classList.add('is-selected');
+        toggleOn.classList.remove('is-selected');
+        toggleSelect.classList.remove('toggle-selector-on');
+        toggleOff.style.opacity = "1";
+        toggleOn.style.opacity = "0"
+        toggle.style.backgroundColor = "#888";
+        toggle.setAttribute("state", 0);
       }
       else {
-        console.error("error changeing state of toggle select..");
+        // toggle the button on
+        toggleOff.classList.remove('is-selected');
+        toggleOn.classList.add('is-selected');
+        toggleOff.style.opacity = "0";
+        toggleOn.style.opacity = "1";
+        toggleSelect.classList.add('toggle-selector-on');
+        toggle.style.backgroundColor = "#1BB157";
+        toggle.setAttribute("state", 1);
       }
     }
+    else {
+      console.error("error changeing state of toggle select..");
+    }
+  }
+  // This component was made by Yuval Gal 
+  // Linkedin : https://www.linkedin.com/in/yuval-gal-88540912b
+  // Feel free to improve it :)
 
-  })(window)
+})(window)
