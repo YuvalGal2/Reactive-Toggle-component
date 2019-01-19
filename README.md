@@ -1,9 +1,10 @@
-Reactive toggle is a vanila based js package based on es6 concepts 
+### Reactive toggle is a vanila based js package based on es6 concepts 
 
 in order to use this package the following please run the following commands : 
-npm -i --save "package-name" in your project directory.
+>> npm -i --save "package-name" in your project directory.
 
 after installing the package you must use a tool like browserify.. etc in order to compile it down to bundle file which you will then have to include like so : 
+``` html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,17 +25,18 @@ after installing the package you must use a tool like browserify.. etc in order 
         <li>4</li>
         <li>5</li>
     </ul>
-    <link rel="stylesheet" href="./node_modules/reactive-toggle/style.css">
+    <link rel="stylesheet" href="./node_modules/reactive-toggle-js/style.css">
     <script src="./bundle.js"></script>
 </body>
-
 </html>
+``` 
 
 
 after doing so you going to have to call the "init" function from your script file like so :
+``` javascript
 let reactiveToggle = require("reactive-toggle");
 reactiveToggle.init();
-
+``` 
 to the init function you can pass copule of variables which are the 
 1. True state text to display
 2. the false text to display
@@ -47,12 +49,17 @@ to the init function you can pass copule of variables which are the
 
 
 and you can use this component as follows : 
-let reactiveToggle = require("reactive-toggle");
+``` javascript
+let reactiveToggle = require("reactive-toggle-js");
 let listArray = Array.prototype.slice.call(document.querySelectorAll("li"));
 console.log(listArray);
 listArray.forEach((listItem,index) => {
     let toggle = reactiveToggle.init("False","True",1,"data-toggle",index,index);
     listItem.appendChild(toggle);
 });
+```
+
+### Feel free to improve it :)
+#### And Feel free [To contact me here](https://www.linkedin.com/in/yuval-gal-88540912b/)
 
 
