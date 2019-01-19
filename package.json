@@ -1,5 +1,5 @@
 {
-  "name": "reactive-toggle",
+  "name": "reactive-toggle-js",
   "version": "1.0.3",
   "description": "Flexable Vanila Js based toggle button which can hold custom property",
   "main": "sliding-toggle-button.js",
