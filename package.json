@@ -1,6 +1,6 @@
 {
   "name": "reactive-toggle",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Flexable Vanila Js based toggle button which can hold custom property",
   "main": "sliding-toggle-button.js",
   "scripts": {
@@ -15,12 +15,16 @@
     "button",
     "javascript",
     "reactive",
-    "css"
+    "css",
+    "vanila Js",
+    "es6",
+    "front end",
+    "js"
   ],
   "author": "Yuval Gal",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/YuvalGal2/Reactive-toggle/issues"
+    "url": "https://github.com/YuvalGal2/Reactive-Toggle-component"
   },
-  "homepage": "https://github.com/YuvalGal2/Reactive-toggle#readme"
+  "homepage": "https://github.com/YuvalGal2/Reactive-Toggle-component/blob/master/README.md"
 }
