@@ -1,7 +1,9 @@
 ### Reactive toggle is a vanila based js package based on es6 concepts 
 
 in order to use this package the following please run the following commands : 
->> npm -i --save "package-name" in your project directory.
+>> npm -i --save "reactive-toggle-js" 
+
+in your project directory.
 
 after installing the package you must use a tool like browserify.. etc in order to compile it down to bundle file which you will then have to include like so : 
 ``` html
